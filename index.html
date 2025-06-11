@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlueStock - IPO Information</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 12px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #6366f1;
+        }
+
+        .logo::before {
+            content: "";
+            width: 30px;
+            height: 30px;
+            background: url('./images/bluestock.jpg') no-repeat center;
+            background-size: contain;
+            margin-right: 10px;
+            border-radius: 6px;
+}
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #6366f1;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-login {
+            background: none;
+            border: 1px solid #e2e8f0;
+            padding: 8px 20px;
+            border-radius: 6px;
+            color: #64748b;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-signup {
+            background: #6366f1;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-signup:hover {
+            background: #5855eb;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #64748b;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 30px;
+        }
+
+        /* IPO Grid */
+        .ipo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .ipo-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .ipo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .company-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .company-logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .company-info h3 {
+            font-size: 18px;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .company-info p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .ipo-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .price-band {
+            color: #059669 !important;
+        }
+
+        .issue-size {
+            color: #dc2626 !important;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-rhp {
+            flex: 1;
+            background: none;
+            border: 2px solid #6366f1;
+            color: #6366f1;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-rhp:hover {
+            background: #6366f1;
+            color: white;
+        }
+
+        .btn-drhp {
+            flex: 1;
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-drhp:hover {
+            background: #dc2626;
+        }
+
+        /* Status badges */
+        .status-not-issued {
+            background: #fef3c7;
+            color: #d97706;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-not-listed {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .faq-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .faq-subtitle {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 20px 0;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .faq-toggle {
+            width: 30px;
+            height: 30px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6366f1;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .faq-answer {
+            padding-top: 15px;
+            color: #64748b;
+            display: none;
+        }
+
+        .faq-answer.active {
+            display: block;
+        }
+
+        .faq-steps {
+            margin-top: 10px;
+        }
+
+        .faq-steps li {
+            margin: 8px 0;
+            color: #64748b;
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            padding: 50px 20px 30px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #64748b;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: #6366f1;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding: 20px 0;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            width: 35px;
+            height: 35px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #6366f1;
+            color: white;
+        }
+
+        .startup-india {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-menu, .auth-buttons {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .ipo-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .ipo-card {
+                padding: 15px;
+            }
+
+            .ipo-details {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .company-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .company-logo {
+                margin-right: 0;
+            }
+
+            .main-container {
+                padding: 20px 15px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .faq-section {
+                padding: 20px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content {
+                padding: 0 10px;
+            }
+
+            .ipo-card {
+                padding: 12px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .company-header {
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">BLUESTOCK</div>
+            <nav class="nav-menu">
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#community">COMMUNITY</a></li>
+                <li><a href="#products">PRODUCTS</a></li>
+                <li><a href="#resources">RESOURCES</a></li>
+                <li><a href="#volumes">VOLUMES</a></li>
+            </nav>
+            <div class="auth-buttons">
+                <a href="#login" class="btn-login">Sign In</a>
+                <a href="#signup" class="btn-signup">Sign up Now</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <h1 class="page-title">Upcoming IPO</h1>
+
+        <!-- IPO Grid -->
+        <div class="ipo-grid">
+            <!-- Nova Agritech Ltd -->
+            <div class="ipo-card">
+                <div class="company-header">
+                    <div class="company-logo">NA</div>
+                    <div class="company-info">
+                        <h3>Nova Agritech Ltd.</h3>
+                        <p>Agricultural Equipment</p>
+                    </div>
+                </div>
+                <div class="ipo-details">
+                    <div class="detail-item">
+                        <div class="detail-label">PRICE BAND</div>
+                        <div class="detail-value price-band">₹39-41</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">OPEN</div>
+                        <div class="detail-value">2024-06-17</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">CLOSE</div>
+                        <div class="detail-value">2024-06-19</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ISSUE SIZE</div>
+                        <div class="detail-value issue-size">₹58 Cr</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ISSUE TYPE</div>
+                        <div class="detail-value">Book Built</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">LISTING DATE</div>
+                        <div class="detail-value">-</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">PRICE BAND</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">OPEN</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">CLOSE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-rhp">RHP</button>
+                    <button class="btn-drhp">DRHP</button>
+                </div>
+            </div>
+
+            <!-- EPACK Durable Ltd -->
+            <div class="ipo-card">
+                <div class="company-header">
+                    <div class="company-logo">EP</div>
+                    <div class="company-info">
+                        <h3>EPACK Durable Ltd.</h3>
+                        <p>Packaging Materials</p>
+                    </div>
+                </div>
+                <div class="ipo-details">
+                    <div class="detail-item">
+                        <div class="detail-label">PRICE BAND</div>
+                        <div class="detail-value price-band">₹218-230</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">OPEN</div>
+                        <div class="detail-value">2024-05-22</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">CLOSE</div>
+                        <div class="detail-value">2024-05-24</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ISSUE SIZE</div>
+                        <div class="detail-value issue-size">₹640 Cr</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ISSUE TYPE</div>
+                        <div class="detail-value">Book Built</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">LISTING DATE</div>
+                        <div class="detail-value">2024-05-30</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">PRICE BAND</div>
+                        <div class="detail-value">₹230</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">OPEN</div>
+                        <div class="detail-value">₹265</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">CLOSE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-rhp">RHP</button>
+                    <button class="btn-drhp">DRHP</button>
+                </div>
+            </div>
+
+            <!-- RK Swamy Ltd -->
+            <div class="ipo-card">
+                <div class="company-header">
+                    <div class="company-logo">RS</div>
+                    <div class="company-info">
+                        <h3>RK Swamy Ltd.</h3>
+                        <p>Advertising Agency</p>
+                    </div>
+                </div>
+                <div class="ipo-details">
+                    <div class="detail-item">
+                        <div class="detail-label">PRICE BAND</div>
+                        <div class="detail-value price-band">₹279-294</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">OPEN</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">CLOSE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ISSUE SIZE</div>
+                        <div class="detail-value issue-size">₹423 Cr</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ISSUE TYPE</div>
+                        <div class="detail-value">Book Built</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">LISTING DATE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">PRICE BAND</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">OPEN</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">CLOSE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-rhp">RHP</button>
+                    <button class="btn-drhp">DRHP</button>
+                </div>
+            </div>
+
+            <!-- OYO Dhwani Satya Ltd -->
+            <div class="ipo-card">
+                <div class="company-header">
+                    <div class="company-logo" style="background: #e11d48;">OYO</div>
+                    <div class="company-info">
+                        <h3>Dhwani Satya Ltd.</h3>
+                        <p>Technology Services</p>
+                    </div>
+                </div>
+                <div class="ipo-details">
+                    <div class="detail-item">
+                        <div class="detail-label">PRICE BAND</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">OPEN</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">CLOSE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ISSUE SIZE</div>
+                        <div class="detail-value">₹420 Cr</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ISSUE TYPE</div>
+                        <div class="detail-value">Book Built</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">LISTING DATE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">PRICE BAND</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">OPEN</div>
+                        <div class="detail-value">Book Built</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">CLOSE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-rhp">RHP</button>
+                    <button class="btn-drhp">DRHP</button>
+                </div>
+            </div>
+
+            <!-- boat Imagine Marketing Ltd -->
+            <div class="ipo-card">
+                <div class="company-header">
+                    <div class="company-logo" style="background: #1e40af;">boAt</div>
+                    <div class="company-info">
+                        <h3>Imagine marketing Ltd.</h3>
+                        <p>Consumer Electronics</p>
+                    </div>
+                </div>
+                <div class="ipo-details">
+                    <div class="detail-item">
+                        <div class="detail-label">PRICE BAND</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">OPEN</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">CLOSE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ISSUE SIZE</div>
+                        <div class="detail-value">₹2000 Cr</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ISSUE TYPE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">LISTING DATE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">PRICE BAND</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">OPEN</div>
+                        <div class="detail-value">Book Built</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">CLOSE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-rhp">RHP</button>
+                    <button class="btn-drhp">DRHP</button>
+                </div>
+            </div>
+
+            <!-- Kris Clinic India Ltd -->
+            <div class="ipo-card">
+                <div class="company-header">
+                    <div class="company-logo" style="background: #be185d;">K</div>
+                    <div class="company-info">
+                        <h3>Kris Clinic India Ltd.</h3>
+                        <p>Healthcare Services</p>
+                    </div>
+                </div>
+                <div class="ipo-details">
+                    <div class="detail-item">
+                        <div class="detail-label">PRICE BAND</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">OPEN</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">CLOSE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ISSUE SIZE</div>
+                        <div class="detail-value">₹25 Cr</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ISSUE TYPE</div>
+                        <div class="detail-value">Book Built</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">LISTING DATE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">PRICE BAND</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">OPEN</div>
+                        <div class="detail-value">Book Built</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">CLOSE</div>
+                        <div class="detail-value">Not Issued</div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-rhp">RHP</button>
+                    <button class="btn-drhp">DRHP</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <h2 class="faq-title">Frequently Asked Questions?</h2>
+            <p class="faq-subtitle">This section has common questions that comes in your mind related to IPO.</p>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(0)">
+                    <span>How to Subscribe to an IPO?</span>
+                    <div class="faq-toggle">+</div>
+                </div>
+                <div class="faq-answer" id="faq-0">
+                    <ul class="faq-steps">
+                        <li><strong>Step 1:</strong> Login to your respective service provider.</li>
+                        <li><strong>Step 2:</strong> Click on the IPO section.</li>
+                        <li><strong>Step 3:</strong> Select the IPO you want to bid and enter the relevant details.</li>
+                        <li><strong>Step 4:</strong> Once the form is completed, place you make the payment or give permission.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(1)">
+                    <span>Should I buy an IPO first day?</span>
+                    <div class="faq-toggle">+</div>
+                </div>
+                <div class="faq-answer" id="faq-1">
+                    <p>It depends on various factors including company fundamentals, market conditions, and your investment goals. Consider researching the company thoroughly before making a decision.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(2)">
+                    <span>How do you know if an IPO is good?</span>
+                    <div class="faq-toggle">+</div>
+                </div>
+                <div class="faq-answer" id="faq-2">
+                    <p>Evaluate the company's business model, financial performance, growth prospects, management quality, and market position.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(3)">
+                    <span>How to check IPO allotment status?</span>
+                    <div class="faq-toggle">+</div>
+                </div>
+                <div class="faq-answer" id="faq-3">
+                    <p>You can check your IPO allotment status through the registrar's website, BSE/NSE website, or through your broker's platform using your PAN number and application number.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(4)">
+                    <span>What is issue size?</span>
+                    <div class="faq-toggle">+</div>
+                </div>
+                <div class="faq-answer" id="faq-4">
+                    <p>Issue size refers to the total amount of money a company aims to raise through its IPO. It's calculated by multiplying the number of shares being offered by the price band.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(5)">
+                    <span>How many shares in a lot?</span>
+                    <div class="faq-toggle">+</div>
+                </div>
+                <div class="faq-answer" id="faq-5">
+                    <p>The number of shares in a lot varies for each IPO. It's typically designed to keep the minimum investment amount reasonable, usually between ₹10,000 to ₹15,000.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(6)">
+                    <span>How is the lot size calculated?</span>
+                    <div class="faq-toggle">+</div>
+                </div>
+                <div class="faq-answer" id="faq-6">
+                    <p>Lot size is calculated to ensure the minimum investment remains accessible to retail investors, typically keeping it between ₹10,000-₹15,000 by dividing this amount by the lower price band.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(7)">
+                    <span>Who decides the IPO price band?</span>
+                    <div class="faq-toggle">+</div>
+                </div>
+                <div class="faq-answer" id="faq-7">
+                    <p>The IPO price band is decided by the company in consultation with merchant bankers based on company valuation, market conditions, and peer comparison analysis.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(8)">
+                    <span>What is IPO GMP?</span>
+                    <div class="faq-toggle">+</div>
+                </div>
+                <div class="faq-answer" id="faq-8">
+                    <p>IPO GMP (Grey Market Premium) is the premium at which IPO shares are traded in the unofficial grey market before they are officially listed on the stock exchange.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(9)">
+                    <span>How many lots should I apply for IPO?</span>
+                    <div class="faq-toggle">+</div>
+                </div>
+                <div class="faq-answer" id="faq-9">
+                    <p>For retail investors, you can apply for 1-13 lots. Applying for 1 lot gives you higher chances of allotment due to the lottery system used for oversubscribed IPOs.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Trading View</h4>
+                    <ul>
+                        <li><a href="#">Stock Screener</a></li>
+                        <li><a href="#">Crypto Screener</a></li>
+                        <li><a href="#">Forex Screener</a></li>
+                        <li><a href="#">Forex Heat Map</a></li>
+                        <li><a href="#">Forex Cross Rates</a></li>
+                        <li><a href="#">Stock Heatmap</a></li>
+                        <li><a href="#">Crypto Heatmap</a></li>
+                        <li><a href="#">ETF Screener</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Wall of Love</a></li>
+                        <li><a href="#">House Rules</a></li>
+                        <li><a href="#">Suggest a feature</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Charting</h4>
+                    <ul>
+                        <li><a href="#">Charting Platform</a></li>
+                        <li><a href="#">Compare Stocks</a></li>
+                        <li><a href="#">Charting Library</a></li>
+                        <li><a href="#">Lightweight Charts</a></li>
+                        <li><a href="#">Advanced Charts</a></li>
+                        <li><a href="#">Trading Terminal</a></li>
+                        <li><a href="#">Widgets</a></li>
+                        <li><a href="#">HTML5 Charts</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>For Business</h4>
+                    <ul>
+                        <li><a href="#">Brokers & Prop Trading Firms</a></li>
+                        <li><a href="#">Website & Mobile Apps</a></li>
+                        <li><a href="#">Desktop Apps</a></li>
+                        <li><a href="#">Brokerage integrations</a></li>
+                        <li><a href="#">Partner program</a></li>
+                        <li><a href="#">Advertising</a></li>
+                        <li><a href="#">Educational Partnership</a></li>
+                        <li><a href="#">Pine Script™</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Policy</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of use</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                        <li><a href="#">Media Guidelines</a></li>
+                        <li><a href="#">Moderators</a></li>
+                        <li><a href="#">Pine Script™ Moderators</a></li>
+                        <li><a href="#">Copyright Policy</a></li>
+                        <li><a href="#">House Rules Enforcement</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-info">
+                    <div class="logo">BLUESTOCK</div>
+                    <p style="margin-top: 10px; color: #64748b; font-size: 14px;">
+                        BlueStock is a registered trademark of TradingView India Private Limited. All rights reserved.
+                    </p>
+                    <p style="color: #64748b; font-size: 12px; margin-top: 10px;">
+                        TradingView India Private Limited is a wholly owned subsidiary of TradingView Inc. TradingView India Private Limited provides brokerage services to Indian residents under the TradingView brand. All investments involve risk, including potential loss of principal, and there is no guarantee that any investment strategy will be successful.
+                    </p>
+                    <div class="startup-india" style="margin-top: 15px;">
+                        <span style="color: #ef4444; font-weight: bold;">#startupindia</span>
+                    </div>
+                </div>
+
+                <div class="social-section">
+                    <div class="social-links">
+                        <a href="#" title="Twitter">𝕏</a>
+                        <a href="#" title="Facebook">f</a>
+                        <a href="#" title="Instagram">📷</a>
+                        <a href="#" title="YouTube">▶</a>
+                        <a href="#" title="LinkedIn">in</a>
+                        <a href="#" title="Reddit">🤖</a>
+                    </div>
+                    <p style="margin-top: 15px; color: #64748b; font-size: 12px;">
+                        Business relations: <a href="mailto:partnerships@tradingview.com" style="color: #6366f1;">partnerships@tradingview.com</a>
+                    </p>
+                    <p style="color: #64748b; font-size: 12px; margin-top: 5px;">
+                        Made with ❤️ in India
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        function toggleFAQ(index) {
+            const answer = document.getElementById(`faq-${index}`);
+            const toggle = event.currentTarget.querySelector('.faq-toggle');
+            
+            // Close all other FAQs
+            document.querySelectorAll('.faq-answer').forEach((item, i) => {
+                if (i !== index) {
+                    item.classList.remove('active');
+                    document.querySelectorAll('.faq-toggle')[i].textContent = '+';
+                    document.querySelectorAll('.faq-toggle')[i].style.background = '#f1f5f9';
+                    document.querySelectorAll('.faq-toggle')[i].style.color = '#6366f1';
+                }
+            });
+            
+            // Toggle current FAQ
+            if (answer.classList.contains('active')) {
+                answer.classList.remove('active');
+                toggle.textContent = '+';
+                toggle.style.background = '#f1f5f9';
+                toggle.style.color = '#6366f1';
+            } else {
+                answer.classList.add('active');
+                toggle.textContent = '−';
+                toggle.style.background = '#6366f1';
+                toggle.style.color = 'white';
+            }
+        }
+
+        // Mobile menu toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            const navMenu = document.querySelector('.nav-menu');
+            const authButtons = document.querySelector('.auth-buttons');
+            
+            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+            authButtons.style.display = authButtons.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Add responsive behavior for mobile menu
+        window.addEventListener('resize', function() {
+            const navMenu = document.querySelector('.nav-menu');
+            const authButtons = document.querySelector('.auth-buttons');
+            
+            if (window.innerWidth > 768) {
+                navMenu.style.display = 'flex';
+                authButtons.style.display = 'flex';
+            } else {
+                navMenu.style.display = 'none';
+                authButtons.style.display = 'none';
+            }
+        });
+
+        // RHP and DRHP button functionality
+        document.querySelectorAll('.btn-rhp, .btn-drhp').forEach(button => {
+            button.addEventListener('click', function() {
+                const buttonType = this.classList.contains('btn-rhp') ? 'RHP' : 'DRHP';
+                const companyName = this.closest('.ipo-card').querySelector('h3').textContent;
+                
+                // In a real application, this would download the actual PDF
+                alert(`${buttonType} document for ${companyName} would be downloaded here.`);
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add loading animation for IPO cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.ipo-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
